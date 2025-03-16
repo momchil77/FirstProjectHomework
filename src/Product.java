@@ -88,7 +88,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Product:" +
                 "Name='" + name + '\'' +
                 ", ExpirationDate='" + expirationDate + '\'' +
                 ", EntryDate='" + entryDate + '\'' +
@@ -96,8 +96,7 @@ public class Product {
                 ", Unit=" + unit +
                 ", Quantity=" + quantity +
                 ", Location='" + location + '\'' +
-                ", Comment='" + comment + '\'' +
-                '}';
+                ", Comment='" + comment + '\'' ;
     }
 
     public String toTxt() {
