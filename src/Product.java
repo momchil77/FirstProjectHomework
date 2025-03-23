@@ -86,6 +86,11 @@ public class Product {
         this.comment = comment;
     }
 
+    public void reduceQuantity(double quantityAmountToReduce) {
+        this.setQuantity(this.quantity - quantityAmountToReduce);
+    }
+
+
     @Override
     public String toString() {
         return "Product:" +
@@ -96,7 +101,7 @@ public class Product {
                 ", Unit=" + unit +
                 ", Quantity=" + quantity +
                 ", Location='" + location + '\'' +
-                ", Comment='" + comment + '\'' ;
+                ", Comment='" + comment + '\'';
     }
 
     public String toTxt() {
@@ -104,7 +109,9 @@ public class Product {
     }
 
     public static Product fromTxt(String line) {
-        String[] parts = line.split("//|");
+        String[] parts = line.split("\\|");
         return new Product(parts[0], parts[1], parts[2], parts[3], Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), parts[6], parts[7]);
+
     }
+
 }

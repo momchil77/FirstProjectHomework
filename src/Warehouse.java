@@ -12,8 +12,33 @@ public class Warehouse {
     }
 
     public void addProduct(Product product) {
+        for (Product existing : products) {
+            if (existing.getName().equalsIgnoreCase(product.getName()) &&
+                    existing.getExpirationDate().equalsIgnoreCase(product.getExpirationDate())) {
+                existing.reduceQuantity(-product.getQuantity());
+                saveToFile();
+                return;
+            }
+        }
         products.add(product);
         saveToFile();
+    }
+
+    public void removeProduct(String name, double quantity) {
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            if (product.getName().equalsIgnoreCase(name)) {
+                if (product.getQuantity() >= quantity) {
+                    product.reduceQuantity(quantity);
+                    if (product.getQuantity() == 0) {
+                        products.remove(products.get(i));
+                    }
+                    saveToFile();
+                    return;
+                }
+            }
+        }
+        System.out.println("Product not found");
     }
 
     private void saveToFile() {
@@ -27,14 +52,21 @@ public class Warehouse {
     }
 
     private void loadFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        File file = new File(filePath);
+        //if (!file.exists() || file.length() == 0) {
+        //    System.out.println("File is empty or does not exist.");
+        //    return;
+        //}
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 products.add(Product.fromTxt(line));
             }
         } catch (IOException e) {
-            System.out.println("No existing data found.");
+            System.out.println("Error reading from file.");
         }
     }
+
 
 }
