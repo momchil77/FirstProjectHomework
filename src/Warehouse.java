@@ -10,6 +10,11 @@ public class Warehouse {
         this.filePath = filePath;
         loadFromFile();
     }
+    public void printProducts() {
+        for (Product product : products) {
+            System.out.println(product);
+        }
+    }
 
     public void addProduct(Product product) {
         for (Product existing : products) {
