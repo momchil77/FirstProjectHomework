@@ -10,7 +10,7 @@ public class Warehouse {
         this.filePath = filePath;
         loadFromFile();
     }
-    public void printProducts() {
+     public void printProducts() {
         for (Product product : products) {
             System.out.println(product);
         }
