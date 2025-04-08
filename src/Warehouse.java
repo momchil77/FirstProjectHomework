@@ -6,11 +6,46 @@ public class Warehouse {
     private List<Product> products = new ArrayList<>();
     private String filePath;
 
-    public Warehouse(String filePath) {
-        this.filePath = filePath;
-        loadFromFile();
+    public Warehouse() {
     }
-     public void printProducts() {
+
+    public void open(String filePath) {
+        this.filePath = filePath;
+        products.clear();
+        loadFromFile(filePath);
+    }
+
+    public void save() {
+        if (filePath == null) {
+            System.out.println("No file is open.");
+            return;
+        }
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+            for (Product product : products) {
+                writer.println(product.toTxt());
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving to file.");
+        }
+    }
+
+    public void saveAs(String newPath) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(newPath))) {
+            for (Product product : products) {
+                writer.println(product.toTxt());
+            }
+            System.out.println("Saved to: " + newPath);
+        } catch (IOException e) {
+            System.out.println("Error saving to new file: " + e.getMessage());
+        }
+    }
+
+    public void close() {
+        products.clear();
+        filePath = null;
+    }
+
+    public void printProducts() {
         for (Product product : products) {
             System.out.println(product);
         }
@@ -56,12 +91,8 @@ public class Warehouse {
         }
     }
 
-    private void loadFromFile() {
+    private void loadFromFile(String filePath) {
         File file = new File(filePath);
-        //if (!file.exists() || file.length() == 0) {
-        //    System.out.println("File is empty or does not exist.");
-        //    return;
-        //}
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
